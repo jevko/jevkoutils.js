@@ -23,6 +23,19 @@ export const jevkoToString = (jevko) => {
   return ret + escape(suffix)
 }
 
+export const jevkoToPrettyString = (jevko, indent = '') => {
+  const {subjevkos, suffix} = jevko
+
+  let ret = ''
+  if (subjevkos.length > 0 && indent !== '') ret += '\n'
+  for (const {prefix, jevko} of subjevkos) {
+    ret += `${indent}${
+      prefix === ''? '': escape(prefix) + ' '
+    }[${jevkoToPrettyString(jevko, indent + '  ')}]\n`
+  }
+  return ret + escape(suffix)
+}
+
 export const escape = (str) => {
   let ret = ''
   for (const c of str) {

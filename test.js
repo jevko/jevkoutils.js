@@ -1,4 +1,5 @@
-import {trim3, isWhitespace, jv} from './mod.js'
+import {trim3, isWhitespace, jv, jevkoToPrettyString} from './mod.js'
+import {parseJevko} from 'parsejevko.js'
 
 console.assert(isWhitespace(' '))
 console.assert(isWhitespace('\n'))
@@ -12,3 +13,5 @@ console.assert(post === '    ')
 
 const brackets = "]][[``"
 console.assert(jv`hello [${brackets}]` === "hello [`]`]`[`[````]", jv`hello [${brackets}]`)
+
+console.assert(jevkoToPrettyString(parseJevko(`a[b]c[d]e[[f][g][h]]`)).includes('\n  [f]'))
