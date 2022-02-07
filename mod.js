@@ -1,3 +1,5 @@
+import { escape } from './escape.js'
+
 export const trim3 = (prefix) => {
   let i = 0, j = 0
   for (; i < prefix.length; ++i) {
@@ -23,28 +25,6 @@ export const jevkoToString = (jevko) => {
   return ret + escape(suffix)
 }
 
-export const jevkoToPrettyString = (jevko, indent = '') => {
-  const {subjevkos, suffix} = jevko
-
-  let ret = ''
-  if (subjevkos.length > 0 && indent !== '') ret += '\n'
-  for (const {prefix, jevko} of subjevkos) {
-    ret += `${indent}${
-      prefix === ''? '': escape(prefix) + ' '
-    }[${jevkoToPrettyString(jevko, indent + '  ')}]\n`
-  }
-  return ret + escape(suffix)
-}
-
-export const escape = (str) => {
-  let ret = ''
-  for (const c of str) {
-    if (c === '[' || c === ']' || c === '`') ret += '`'
-    ret += c
-  }
-  return ret
-}
-
 export const jv = (strings, ...keys) => {
   let ret = ''
   for (let i = 0; i < strings.length - 1; ++i) {
@@ -55,3 +35,6 @@ export const jv = (strings, ...keys) => {
 
   return ret + strings[strings.length - 1]
 }
+
+export {jevkoToPrettyString} from './jevkoToPrettyString.js'
+export {escape} from './escape.js'

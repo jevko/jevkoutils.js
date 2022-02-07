@@ -14,4 +14,8 @@ console.assert(post === '    ')
 const brackets = "]][[``"
 console.assert(jv`hello [${brackets}]` === "hello [`]`]`[`[````]", jv`hello [${brackets}]`)
 
-console.assert(jevkoToPrettyString(parseJevko(`a[b]c[d]e[[f][g][h]]`)).includes('\n  [f]'))
+const prettyString = jevkoToPrettyString(parseJevko(`a[b]c[d]e[[f][[g][x][c]][h]]`))
+
+console.assert(prettyString.includes('\n  [f]'))
+console.assert(prettyString.includes('\n    [g]'))
+console.assert(prettyString.includes('\n  ]'))
