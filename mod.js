@@ -38,3 +38,4 @@ export const jv = (strings, ...keys) => {
 
 export {jevkoToPrettyString} from './jevkoToPrettyString.js'
 export {escape} from './escape.js'
+export {argsToJevko} from './argsToJevko.js'
