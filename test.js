@@ -1,4 +1,4 @@
-import {trim3, isWhitespace, jv, jevkoToPrettyString, argsToJevko} from './mod.js'
+import {trim3, isWhitespace, jv, jevkoToPrettyString, argsToJevko, jevkoToPrettyJevko, jevkoToString} from './mod.js'
 import {parseJevko} from 'parsejevko.js'
 
 console.assert(isWhitespace(' '))
@@ -25,3 +25,5 @@ console.assert(jevkoToPrettyString(argsToJevko(
   "last", " name", ["Smith"],
   "things", [["1"], ["2"], "", ["3"]]
 )).includes('first name [John]'))
+
+console.assert(jevkoToString(jevkoToPrettyJevko(parseJevko(`a[b]c[[d][[e]x[f]]]`))).includes('    x [f]\n  ]\n'))
