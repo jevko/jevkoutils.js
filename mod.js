@@ -41,3 +41,4 @@ export {escape} from './escape.js'
 export {argsToJevko} from './argsToJevko.js'
 
 export {jevkoToPrettyJevko} from './jevkoToPrettyJevko.js'
+export {jevkosEqual} from './jevkosEqual.js'

@@ -1,29 +1,46 @@
-import {trim3, isWhitespace, jv, jevkoToPrettyString, argsToJevko, jevkoToPrettyJevko, jevkoToString} from './mod.js'
-import {parseJevko} from 'parsejevko.js'
+import {trim3, isWhitespace, jv, jevkoToPrettyString, argsToJevko, jevkoToPrettyJevko, jevkoToString, jevkosEqual} from './mod.js'
+import {parseJevko, assert} from './devDeps.js'
 
-console.assert(isWhitespace(' '))
-console.assert(isWhitespace('\n'))
-console.assert(isWhitespace('\t'))
+const {test} = Deno
 
-const [pre, mid, post] = trim3('   mid mid mid    ')
+test('isWhitespace', () => {
+  assert(isWhitespace(' '))
+  assert(isWhitespace('\n'))
+  assert(isWhitespace('\t'))
+})
 
-console.assert(pre === '   ')
-console.assert(mid === 'mid mid mid')
-console.assert(post === '    ')
+test('trim3', () => {
+  const [pre, mid, post] = trim3('   mid mid mid    ')
+  
+  assert(pre === '   ')
+  assert(mid === 'mid mid mid')
+  assert(post === '    ')
+})
 
-const brackets = "]][[``"
-console.assert(jv`hello [${brackets}]` === "hello [`]`]`[`[````]", jv`hello [${brackets}]`)
+test('jv', () => {
+  const brackets = "]][[``"
+  assert(jv`hello [${brackets}]` === "hello [`]`]`[`[````]", jv`hello [${brackets}]`)
+})
 
-const prettyString = jevkoToPrettyString(parseJevko(`a[b]c[d]e[[f][[g][x][c]][h]]`))
+test('jevkoToPrettyString', () => {
+  const prettyString = jevkoToPrettyString(parseJevko(`a[b]c[d]e[[f][[g][x][c]][h]]`))
 
-console.assert(prettyString.includes('\n  [f]'))
-console.assert(prettyString.includes('\n    [g]'))
-console.assert(prettyString.includes('\n  ]'))
+  assert(prettyString.includes('\n  [f]'))
+  assert(prettyString.includes('\n    [g]'))
+  assert(prettyString.includes('\n  ]'))
 
-console.assert(jevkoToPrettyString(argsToJevko(
-  "first", " name", ["John"],
-  "last", " name", ["Smith"],
-  "things", [["1"], ["2"], "", ["3"]]
-)).includes('first name [John]'))
+  assert(jevkoToPrettyString(argsToJevko(
+    "first", " name", ["John"],
+    "last", " name", ["Smith"],
+    "things", [["1"], ["2"], "", ["3"]]
+  )).includes('first name [John]'))
+})
 
-console.assert(jevkoToString(jevkoToPrettyJevko(parseJevko(`a[b]c[[d][[e]x[f]]]`))).includes('    x [f]\n  ]\n'))
+test('jevkoToString, jevkoToPrettyJevko', () => {
+  assert(jevkoToString(jevkoToPrettyJevko(parseJevko(`a[b]c[[d][[e]x[f]]]`))).includes('    x [f]\n  ]\n'))
+})
+
+test('jevkosEqual', () => {
+  assert(jevkosEqual(parseJevko(`a [b] c [d]`), parseJevko(`a [b] c [d]`)))
+  assert(jevkosEqual(parseJevko(`a[b] c [d]`), parseJevko(`a [b] c [d]`)) === false)
+})
